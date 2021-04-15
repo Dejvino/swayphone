@@ -1,0 +1,30 @@
+_pkgbase=pptk-git
+pkgname=pptk-git
+pkgver=1
+pkgrel=1
+pkgdesc="PinePhone ToolKit - GIT"
+url="https://github.com/Dejvino/pinephone-toolkit"
+arch=('aarch64')
+license=(Apache)
+depends=()
+makedepends=(git meson ninja)
+provides=(pptk)
+conflicts=(pptk)
+source=(
+    $pkgname::git+https://github.com/Dejvino/pinephone-toolkit
+)
+sha256sums=(
+    SKIP
+)
+
+build() {
+    cd "$srcdir/$pkgname"
+    meson --prefix=/usr --buildtype=plain build
+    ninja -C build
+}
+
+package() {
+    cd "$srcdir/$pkgname"
+    DESTDIR="$pkgdir" meson install -C build
+}
+
